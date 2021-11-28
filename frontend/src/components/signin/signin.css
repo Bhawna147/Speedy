@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Space+Grotesk:wght@300&family=Ubuntu:wght@300;400&display=swap');
+
+.main-signin{
+    display: flex;
+}
+/* left */
+.signin-left{
+    flex-basis: 36%;
+    display: flex;
+    flex-direction: column;
+    padding: 13px;
+}
+.signin-left-logo{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 42px;
+    color: #5066C9;
+    border: 1px solid #FFFFFF;
+}
+.signin-left-heading{
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 40px;
+    line-height: 75px;
+    color: #5066C9;
+    border: 1px solid #FFFFFF;
+    margin-top: 2rem;
+}
+/* :right */
+.signin-right{
+    flex-basis: 64%;
+    display:flex;
+    align-items: center;
+}
+.signin-right-main{
+    width: 490px;
+    height:495px;
+    margin-top: 80px;
+   background: #5066C9;
+   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 15px;
+}
+.signin-right-inner{
+    position: absolute;
+    width: 470px;
+    height: 450px;
+    /* left: 514px; */
+    background: #8C9EF4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 25px;
+}
+/* .signin-right-main-touch{
+    width: 117px;
+    height: 33px;
+    position: absolute;
+width: 117px;
+height: 33px;
+left: 691px;
+top: 877px;
+
+} */
+form{
+    flex-basis: 40%;
+    display: flex;
+    flex-direction: column;
+     align-items: center;
+     justify-content: space-between;
+}
+.control-inputs{
+    width:256px;
+    border-radius: 35px;
+    padding: 0.5rem;
+    border-width: 0;
+    font-family: 'Roboto', sans-serif;
+}
+.signin-btns{
+    flex-basis: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+.signin-btn{
+    background: #FFFFFF;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 25px;
+    width: 177px;
+    height: 40px;
+    border-width: 0;
+}
+.except{
+    font-family: 'Roboto', sans-serif;
+   font-style: normal;
+   font-weight: normal;
+   font-size: 24px;
+   line-height: 28px;
+  color: #E8E8E8;
+}

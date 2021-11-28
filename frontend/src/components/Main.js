@@ -1,5 +1,6 @@
 import React from 'react'
-import { Row, Col } from "react-bootstrap";
+// import { Row, Col } from "react-bootstrap";
+import {Link } from "react-router-dom"
 import "./main.css";
 
 const Main = () => {
@@ -17,10 +18,7 @@ const Main = () => {
 
 
                        <div className="main-left-bottom">
-                       <div> <button className="main-buttons"
-                    //    onClick
-                       >Start</button></div>
-                       {/* <div> <button className="main-buttons">Sign Up</button></div> */}
+                       <div> <Link to="/text"><button className="main-buttons">Start</button></Link></div>
                        </div>
                    </div>
 
