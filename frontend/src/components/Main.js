@@ -1,8 +1,21 @@
 import React from 'react'
-import { Row, Col } from "react-bootstrap";
+// import { Row, Col } from "react-bootstrap";
 import "./main.css";
+import {  useNavigate } from "react-router-dom";
 
 const Main = () => {
+
+    const navigate =  useNavigate();
+
+    const routeChange = () =>{ 
+      let path = `/text`; 
+    //   history.push(path);
+    //   navigate('/home');
+      navigate(path);
+
+    }
+
+
     return (
         <>
 
@@ -18,7 +31,9 @@ const Main = () => {
 
                        <div className="main-left-bottom">
                        <div> <button className="main-buttons"
-                    //    onClick
+                       onClick = {routeChange}
+
+
                        >Start</button></div>
                        {/* <div> <button className="main-buttons">Sign Up</button></div> */}
                        </div>

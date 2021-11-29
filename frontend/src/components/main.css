@@ -64,3 +64,39 @@
     /* justify-content: center; */
     margin-top: 22%;
 }
+
+
+@media only screen and (max-width: 1200px) {
+
+
+    .main-left {
+      
+        flex-basis: 50%;
+     
+    }
+    
+    .main-right {
+   
+        flex-basis: 50%;
+    }
+
+    
+}
+
+
+
+
+@media only screen and (max-width: 800px) {
+
+    .main-right p{
+        font-size: 50PX;
+        margin-left: 4rem;
+        margin-left: 4rem;
+        margin-top: 50%;
+
+    }
+
+    
+
+    
+}

@@ -9,7 +9,7 @@ import {
 import Main from "./components/Main";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
-import Text from "./components/Text";
+import Text from "./components/text/Text";
 import Leaderboard from "./components/Leaderboard";
 
 
