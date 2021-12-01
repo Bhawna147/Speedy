@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const User = require("./models/Users");
 const app = express();
 const cors = require("cors");
+var a = require('http').createServer();
 // const morgan = require("morgan");
 // const loginRoute=require("./routes/login");
 // const signupRoute=require("./routes/signup");
@@ -99,7 +100,18 @@ app.get("/isAuth", (req, res) => {
     }
 })
 
+const io=require("socket.io")(a,{
+    cors:{
+        origin:"http://localhost:3000",
+        method:["GET","POST"]
+    }
+});
+io.on("connection",socket=>{
+    console.log("connected socket");
+    console.log(io.engine.clientsCount);
+    socket.emit("no-of-users",io.engine.clientsCount);
+})
 
-app.listen(process.env.PORT, (req, res) => {
+a.listen(process.env.PORT, (req, res) => {
     console.log("port running on " + process.env.PORT);
 })

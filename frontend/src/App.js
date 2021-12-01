@@ -10,7 +10,8 @@ import Axios from "axios";
 import Main from "./components/Main";
 import Signin from "./components/signin/Signin";
 import Signup from "./components/signup/Signup";
-import Text from "./components/Text";
+import Text from "./components/text/Text";
+import Multi from "./components/multi/Multi"
 import Leaderboard from "./components/Leaderboard";
 
 
@@ -35,6 +36,7 @@ const App = () => {
         <Route exact path="/signup"   element = { <Signup/>  }></Route>
         <Route exact path="/text"     element = { <Text/>    }></Route>
         <Route exact path="/leaderboard" element ={ <Leaderboard /> }></Route>
+        <Route exact path="/multiplayer" element ={ <Multi /> }></Route>
         
         </Routes>
 

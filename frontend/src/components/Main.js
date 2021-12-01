@@ -1,9 +1,21 @@
 import React from 'react'
 // import { Row, Col } from "react-bootstrap";
-import {Link } from "react-router-dom"
 import "./main.css";
+import {  useNavigate } from "react-router-dom";
 
 const Main = () => {
+
+    const navigate =  useNavigate();
+
+    const routeChange = () =>{ 
+      let path = `/text`; 
+    //   history.push(path);
+    //   navigate('/home');
+      navigate(path);
+
+    }
+
+
     return (
         <>
 
@@ -18,7 +30,12 @@ const Main = () => {
 
 
                        <div className="main-left-bottom">
-                       <div> <Link to="/text"><button className="main-buttons">Start</button></Link></div>
+                       <div> <button className="main-buttons"
+                       onClick = {routeChange}
+
+
+                       >Start</button></div>
+                       {/* <div> <button className="main-buttons">Sign Up</button></div> */}
                        </div>
                    </div>
 
