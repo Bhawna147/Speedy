@@ -1,21 +1,21 @@
 import React from 'react'
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { useState, useEffect } from 'react';
-import Text from "../text/Text";
+import Text from "./multiText";
 
 const Multi = () => {
     const [socket, setSocket] = useState();
     const [users, setusers] = useState(0);
-    useEffect(() => {
-        const s = io("http://localhost:5000");//server side port
-        // console.log(s);
-        setSocket(s);
+    // useEffect(() => {
+    //     const s = io("http://localhost:5000");//server side port
+    //     // console.log(s);
+    //     setSocket(s);
 
-        return () => {
-            s.disconnect();
-        }
+    //     return () => {
+    //         s.disconnect();
+    //     }
 
-    }, [])
+    // }, [])
     //    useEffect(() => {
     //        if(socket==null)
     //        return;
@@ -23,18 +23,18 @@ const Multi = () => {
     //     // socket.emit("user-name",name);
     //    }, [])  
 
-    useEffect(() => {
-        console.log(socket);
-        if (socket == null)
-            return;
-        socket.on("no-of-users", num => {
-            setusers(num);
-            console.log(num);
-            if (num < 5)
-                alert("please wait so that more people can join")
-                //SM,DNm,n,MDN,mdnm,dn
-        })
-    }, [socket])
+    // useEffect(() => {
+    //     console.log(socket);
+    //     if (socket == null)
+    //         return;
+    //     socket.on("no-of-users", num => {
+    //         setusers(num);
+    //         console.log(num);
+    //         if (num < 5)
+    //             alert("please wait so that more people can join")
+    //             //SM,DNm,n,MDN,mdnm,dn
+    //     })
+    // }, [socket])
 
     // useEffect(() => {
     //     function preventFocus (evt){

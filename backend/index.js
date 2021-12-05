@@ -5,6 +5,7 @@ var router = require("express").Router();
 const mongoose = require("mongoose");
 const User = require("./models/Users");
 const app = express();
+const http = require("http").Server(app);
 const cors = require("cors");
 var a = require('http').createServer();
 // const morgan = require("morgan");
@@ -35,11 +36,10 @@ app.post("/login", (req, response) => {
         if (err)
             console.log(err);
         else {
-            console.log(res.length,"a");
-            if (res.length == 0)
-                {
-                    response.send(false);
-                }
+            console.log(res.length, "a");
+            if (res.length == 0) {
+                response.send(false);
+            }
             else {
                 response.cookie("email", req.body.data.email, {
                     sameSite: "lax",
@@ -91,7 +91,7 @@ app.get("/logout", (req, res) => {
 })
 
 app.get("/isAuth", (req, res) => {
-    console.log(req.cookies,"a");
+    console.log(req.cookies, "a");
     if (req.cookies !== undefined && req.cookies.auth === 'true') {
         res.send(true);
     }
@@ -100,18 +100,58 @@ app.get("/isAuth", (req, res) => {
     }
 })
 
-const io=require("socket.io")(a,{
-    cors:{
-        origin:"http://localhost:3000",
-        method:["GET","POST"]
+const io = require("socket.io")(http, {
+    cors: {
+        origin: "http://localhost:3000",
+        method: ["GET", "POST"]
     }
 });
-io.on("connection",socket=>{
+
+let users = [];
+let speed = [];
+let pair = [];
+io.on("connection", socket => {
+    socket.on("new-user-joined", name => {
+        users.push({ socketid: socket.id, name: name });
+   
+    })
+    socket.on("speed-of-user", (data) => {
+    
+        if (!(speed.find(({ socketid }) => socketid === socket.id))) {
+            console.log("inside speed");
+            speed.push({ socketid: socket.id, speed: data });
+        }
+        else {
+            const index = speed.findIndex(({ socketid }) => socketid === socket.id);
+            console.log(index);
+            speed[index].speed = data;
+        }
+       
+        for (var i = 0; i < users.length; i++) {
+            const result = pair.find(({ name }) => name === users[i].name);
+            //    console.log(result,"result");
+            if (result === undefined) {
+                if (speed[i] === undefined)
+                    pair.push({ name: users[i].name, speed: 0 });
+                else
+                    pair.push({ name: users[i].name, speed: speed[i].speed });
+            }
+            else {
+                console.log(speed[i].sp);
+                pair[i].speed = speed[i].speed;
+            }
+            console.log(pair, "pair");
+        }
+        socket.emit("user-speed-array", pair);
+    })
+
+
+
+    socket.emit("usernames", users);
     console.log("connected socket");
-    console.log(io.engine.clientsCount);
-    socket.emit("no-of-users",io.engine.clientsCount);
+   
 })
 
-a.listen(process.env.PORT, (req, res) => {
+http.listen(process.env.PORT, (req, res) => {
     console.log("port running on " + process.env.PORT);
 })

@@ -1,7 +1,5 @@
-// import React from 'react'
 import React, { useState ,useRef ,useEffect } from "react";
 import "./text.css";
-import Preview from './Preview';
 
 
 const getCloud = () => 'bhawna aparna ayush arnab bhurji birju chimni aditya don abhas anunaya harshit rumtika bijli amit naina deempika doggy scooby tikaalaaa'.split(' ')
@@ -44,9 +42,11 @@ Word = React.memo(Word)
 function Timer(props){
     const { correctWords , startCounting} = props
     const [timeElapsed , setTimeElapsed] = useState(0)
-    const [speed, setSpeed]=useState(((correctWords/minutes) || 0 ).toFixed(2));
+    const [speed, setSpeed]=useState(0);
+
     useEffect(() => {
         console.log(speed);
+        setSpeed(((correctWords/minutes) || 0 ).toFixed(2));
         let id
         if(startCounting) {
             id = setInterval(() => {
@@ -60,7 +60,12 @@ function Timer(props){
         }
     },[startCounting])
 
-    const minutes = timeElapsed/60
+    const minutes = timeElapsed/60;
+    useEffect(() => {
+        setSpeed(((correctWords/minutes) || 0 ).toFixed(2));
+        // props.speedHandler(speed);
+        console.log(speed,timeElapsed);
+    }, [correctWords,timeElapsed])
 
 
     return <div className="speed">
@@ -72,8 +77,8 @@ function Timer(props){
 }
 
 
-function Text () {
-
+function Text (props) {
+      console.log(props,"a");
     const[userInput , setUserInput] = useState("");
     const cloud  = useRef(getCloud())
     console.log(cloud.current);
@@ -155,6 +160,7 @@ function processInput (value){
 
     <div className="timer" id="timer">
      <Timer 
+     speedHandler={props.speedHandler}
      startCounting = {startCounting} 
      correctWords = {correctWordArray.filter(Boolean).length } 
      />

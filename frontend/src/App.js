@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // import { Route, Routes} from "react-router-dom";
 import { 
   BrowserRouter as Router ,
@@ -26,6 +26,11 @@ const App = () => {
     });
   
   }, [])
+  const[speed,setSpeed]=useState();
+
+  const speedHandler=(gotSpeed)=>{
+    setSpeed(gotSpeed);
+  }
   return (
   
       <Router>
@@ -34,7 +39,7 @@ const App = () => {
         <Route exact path="/"         element = { <Main/> }></Route>
         <Route exaxct path="/signin"  element = { <Signin /> } ></Route>
         <Route exact path="/signup"   element = { <Signup/>  }></Route>
-        <Route exact path="/text"     element = { <Text/>    }></Route>
+        <Route exact path="/text"     element = {<Text  speedHandler={speedHandler} />}></Route>
         <Route exact path="/leaderboard" element ={ <Leaderboard /> }></Route>
         <Route exact path="/multiplayer" element ={ <Multi /> }></Route>
         
