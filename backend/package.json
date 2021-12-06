@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "devStart": "nodemon server.js"
   },
   "author": "bhawna",
   "license": "ISC",
@@ -17,6 +16,10 @@
     "express": "^4.17.1",
     "mongoose": "^6.0.13",
     "morgan": "^1.10.0",
+    "socket.io": "^4.4.0",
+    "styled-components": "^5.3.3"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.15"
   }
 }

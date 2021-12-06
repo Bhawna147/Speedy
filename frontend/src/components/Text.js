@@ -1,17 +1,158 @@
-// import React from 'react'
+import {io} from 'socket.io-client';
+import jQuery from 'jquery'
+import styled, { inline } from 'styled-components';
+
+// import React from 'react';
 import React, { useState ,useRef ,useEffect } from "react";
 import "./text.css";
 // import Preview from './Preview';
 
 
-const getCloud = () => 'bhawna aparna ayush arnab bhurji birju chimni aditya don abhas anunaya harshit rumtika bijli amit naina deempika doggy scooby tikaalaaa'.split(' ')
+const roomInput = document.getElementById("room-input")
+const joinRoomButton = document.getElementById("room-button")
+
+var value = prompt("Enter User name :: ")
+
+
+
+
+const socket = io('http://localhost:5000')
+
+
+socket.on('connect' , () => {
+ 
+    alert(value + " successfully connected to server !!")
+
+    newfunc()
+   
+})
+
+function forState(speedN){
+    const [speed, setSpeed] = useState(0);
+    setSpeed(speedN);
+    return speed;
+}
+
+function newfunc(){
+
+    createDiv(value , speed );
+    // displayLeaderboard(speed , value);
+}
+
+
+
+socket.on('received-time-words-name' , (timeElapsed  ,correctWords , value ) => {
+    // console.log( timeElapsed);
+    // console.log(correctWords);
+    // dusre user ke correctwords"
+  
+
+    const minutes = timeElapsed/60;
+    const speed = ((correctWords/minutes) || 0 ).toFixed(2)
+    // displayLeaderboard(speed , value);
+    forState(speed);
+    // setSpeed(speed);
+    // createDiv(value);
+})
+
+
+jQuery(function($){
+socket.on('users_count' , function(data){
+$('#client_count').text(data);
+})
+});
+//from server to show to every client
+
+// socket.emit("custom-event", 10 , "hi" , {a: "a"  })
+// client to server
+
+
+
+
+const getCloud = () => 'bhawna aparna'.split(' ')
+// ayush arnab bhurji birju chimni aditya don abhas anunaya harshit rumtika bijli amit naina deempika doggy scooby tikaalaaa
 // .sort(() => Math.random() > 0.5 ? 1 : -1)
 
+// var check = 0;
+
+function  createDiv(value ,speed ) {
+
+    socket.on('fetch_id' , (socketId) => {
+        // console.log(socketId)
+        const idN = socketId;
+    
+
+    const div = document.createElement("div")
+    const p   = document.createElement("p")
+
+    // var element = document.querySelector("#current-0")
+    // if (element) {
+    //     element.textContent = dice
+    // }
+    div.setAttribute("class" , idN)
+    p.setAttribute("class" , idN)
+
+    div.textContent = value;
+    p.textContent   = 0;
+
+
+    document.getElementById("Leaderboard-container").append(p)
+    document.getElementById("Leaderboard-container").append(div)
+
+    displayLeaderboard(speed , value);
+
+    })
+
+
+}
+
+function displayLeaderboard( speed , value  ) {
+
+    socket.on('fetch_id' , (socketId) => {
+        console.log(socketId)
+        const idN = socketId;
+
+    // document.querySelector('h7').innerHTML = value;
+    // document.querySelector('h6').innerHTML = speed;
+
+ console.log( document.getElementsByClassName(idN));
+    // document.getElementsByClassName(idN).innerHTML = speed;
+    // document.querySelector('id').innerHTML = value;
+    // document.querySelector('h6').innerHTML = speed;
+
+    })
+
+
+
+    // const div = document.createElement("div")
+    // const p   = document.createElement("p")
+
+
+    // div.textContent = speed
+    // p.textContent = value
+
+
+    // document.getElementById("Leaderboard-container").append(p)
+    // document.getElementById("Leaderboard-container").append(div)
+   
+   
+}
+
+
+ // document.getElementById("points").setAttribute('value', new Number(request.responseText));
+
+
 function Word (props) {
+
+
     
     const {text , active  , correct } = props
      
     const rerender = useRef(0)
+    // const [speedn , setSpeedn ]  = useState(0); 
+        
+
+    // speedn = 0;
 
     useEffect(() => {
         rerender.current += 1
@@ -40,7 +181,10 @@ function Word (props) {
 Word = React.memo(Word)
 
 
-function Timer(props){
+function Timer(props) { 
+
+
+
     const { correctWords , startCounting} = props
     const [timeElapsed , setTimeElapsed] = useState(0)
     useEffect(() => {
@@ -52,6 +196,7 @@ function Timer(props){
         }
            
 
+        
         return () => {
             clearInterval(id)
         }
@@ -59,13 +204,25 @@ function Timer(props){
 
     const minutes = timeElapsed/60
 
+   
+    socket.emit("send-time-words-name", timeElapsed , correctWords ,value )
+    
+
+
+
+    // const [sppeed , set Sppeed] = useState(0);
+    // const [sppeed , set Sppeed] = useState(0);
+
 
     return <div className="speed">
     <div style={{ marginRight: '20%' }}><p>Time : {timeElapsed}</p></div>
     {/* <div className="filler"></div> */}
+
+
     <div><p>Speed: {((correctWords/minutes) || 0 ).toFixed(2)} WPM </p></div>
     </div>
-
+    
+    // console.log(setSpeedn);
 }
 
 
@@ -75,9 +232,9 @@ function Text () {
     const cloud  = useRef(getCloud())
     console.log(cloud.current);
    
-    const[startCounting , setStartCounting] = useState(false)
+    const[startCounting , setStartCounting]       = useState(false)
 
-    const[activeWordIndex  , setActiveWordIndex] = useState(0);
+    const[activeWordIndex  , setActiveWordIndex]  = useState(0);
     const[correctWordArray , setCorrectWordArray] = useState([]);
 
      
@@ -145,9 +302,22 @@ function processInput (value){
         <div><p>SignUp</p></div>
     </div>
 
+    <input type="text" placeholder="enter ROOM id" id="room-input" />
+    <button type="button" id="room-button">Join</button>
 
+<span id="client_count"> 0 </span>
+ <span> - users online</span>
+<div id="Leaderboard-container"> 
+<br/>
+    <h1>Leaderboard</h1>
+    <h7 className="styleH"  style={{ display: 'inline' }}>NA</h7>
+    <p  className="styleH"  style={{ display: 'inline' }}>-</p>
+    <h6 className="styleH"  style={{ display: 'inline' }}>0</h6>
+
+</div>
 
 <div className="text-body">
+
 
     <div className="timer" id="timer">
      <Timer 
@@ -155,7 +325,7 @@ function processInput (value){
      correctWords = {correctWordArray.filter(Boolean).length } 
      />
 
-     
+
     </div>
 
      <div className="text-container">
