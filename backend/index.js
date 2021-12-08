@@ -113,7 +113,8 @@ let pair = [];
 io.on("connection", socket => {
     socket.on("new-user-joined", name => {
         users.push({ socketid: socket.id, name: name });
-   
+        console.log(users,"inside");
+        io.sockets.emit("usernames", users);
     })
     socket.on("speed-of-user", (data) => {
     
@@ -126,28 +127,8 @@ io.on("connection", socket => {
             console.log(index);
             speed[index].speed = data;
         }
-       
-        for (var i = 0; i < users.length; i++) {
-            const result = pair.find(({ name }) => name === users[i].name);
-            //    console.log(result,"result");
-            if (result === undefined) {
-                if (speed[i] === undefined)
-                    pair.push({ name: users[i].name, speed: 0 });
-                else
-                    pair.push({ name: users[i].name, speed: speed[i].speed });
-            }
-            else {
-                console.log(speed[i].sp);
-                pair[i].speed = speed[i].speed;
-            }
-            console.log(pair, "pair");
-        }
-        socket.emit("user-speed-array", pair);
-    })
-
-
-
-    socket.emit("usernames", users);
+        io.sockets.emit("user-speed-array", speed);
+    });
     console.log("connected socket");
    
 })

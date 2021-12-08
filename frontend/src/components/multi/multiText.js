@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 import Leaderboard from "../Leaderboard";
 
-var p=[];
+var p = [];
 const getCloud = () => 'bhawna aparna ayush arnab bhurji birju chimni aditya don abhas anunaya harshit rumtika bijli amit naina deempika doggy scooby tikaalaaa'.split(' ')
 // .sort(() => Math.random() > 0.5 ? 1 : -1)
 
@@ -75,51 +75,67 @@ function Timer(props) {
         const s = io("http://localhost:5000");//server side port
         // console.log(s);
         setSocket(s);
-
-        s.on("user-speed-array", pair=>{
-            console.log(pair);
-        });
         return () => {
             s.disconnect();
         }
 
     }, [])
-   
+
     // const name;
- 
+
     useEffect(() => {
-        if(socket==null)
-        return 
-        const  name=prompt("enter yourusername");
-        if(name==null||name=="")
-        {
+        if (socket == null)
+            return
+        const name = prompt("enter yourusername");
+        if (name == null || name == "") {
             alert("please enter the username");
         }
-       if(name!==null||name!=="")
-        socket.emit("new-user-joined",name);
-        socket.on("user-speed-array",pair=>{
-            console.log(pair,"user-speed-kjdfj");
-            p=pair;  
-            // {<Leaderboard p={p} />}
-        })
-        return ()=>{
-            
+        if (name !== null || name !== "")
+            socket.emit("new-user-joined", name);
+        socket.on("user-speed-array", pair => {
+            console.log(pair);
+            setSpeed(pair)
+        });
+        const setSpeed = (pair) => {
+            pair.map((user) => {
+                if (document.querySelectorAll(`span[data='${user.socketid}']`)[0]) {
+                    return document.querySelectorAll(`span[data='${user.socketid}']`)[0].innerHTML=user.speed;
+                }
+                else {
+                    const sp = document.createElement("span");
+                    sp.innerHTML = user.speed;
+                    sp.setAttribute("data",user.socketid);
+                    return document.querySelectorAll(`div[data='${user.socketid}']`)[0].append(sp);
+                }
+
+            })
         }
+        const createDiv = (users) => {
+            console.log(users, "inside create");
+            users.map((user) => {
+                console.log(document.querySelectorAll(`div[data='${user.socketid}']`)[0]);
+                if (document.querySelectorAll(`[data='${user.socketid}']`).length>0) {
+                    return document.querySelectorAll(`div[data='${user.socketid}']`)[0].innerHTML=user.name;
+                }
+                else {
+                    const d = document.createElement("div");
+                    d.setAttribute("data", user.socketid);
+                    d.textContent = user.name;
+                    return document.getElementById("leader").append(d);
+                }
+            })
+        }
+        socket.on("usernames", users => {
+            console.log(users);
+            createDiv(users);
+        });
     }, [socket])
 
 
     useEffect(() => {
-        if (socket == null||speed==null)
+        if (socket == null || speed == null)
             return;
-        const interval= setInterval(() => {
-            socket.emit("speed-of-user",speed);
-            console.log("hi");
-        }, 2000);
-        return ()=>{
-            clearInterval(interval);
-            console.log("done");
-        }
-      
+        socket.emit("speed-of-user", speed);
     }, [speed])
 
     // useEffect(() => {
@@ -291,14 +307,15 @@ function MultiText(props) {
 
                     // onClick = {onRestart}
                     >Restart</button></div>
-                     
-                
+
+
 
                 </div>
 
 
             </div>
 
+            <div id="leader">Leader</div>
 
 
 
